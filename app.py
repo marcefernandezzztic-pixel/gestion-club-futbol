@@ -9,14 +9,31 @@ import urllib.parse
 st.set_page_config(page_title="Club Manager", layout="centered")
 
 # --- CONEXIÓN CON GOOGLE SHEETS ---
-# Aquí deberías configurar tus credenciales de Google
 SHEET_NAME = "Socios Club"
+
 try:
-    # Usamos gspread para conectar con la hoja
-    spread = Spread(SHEET_NAME)
+    # 1. Creamos el diccionario de configuración desde los Secrets de Streamlit
+    creds_dict = {
+        "type": st.secrets["type"],
+        "project_id": st.secrets["project_id"],
+        "private_key_id": st.secrets["private_key_id"],
+        "private_key": st.secrets["private_key"],
+        "client_email": st.secrets["client_email"],
+        "client_id": st.secrets["client_id"],
+        "auth_uri": st.secrets["auth_uri"],
+        "token_uri": st.secrets["token_uri"],
+        "auth_provider_x509_cert_url": st.secrets["auth_provider_x509_cert_url"],
+        "client_x509_cert_url": st.secrets["client_x509_cert_url"],
+        "universe_domain": st.secrets["universe_domain"]
+    }
+    
+    # 2. Configuramos la conexión usando ese diccionario
+    config = Conf.from_dict(creds_dict)
+    spread = Spread(SHEET_NAME, config=config) # <--- IMPORTANTE: pasar el config aquí
     df = spread.sheet_to_df(index=0)
+    
 except Exception as e:
-    st.error("Error al conectar con Google Sheets. Verifica las credenciales.")
+    st.error(f"Error de conexión: {e}")
     st.stop()
 
 st.title("⚽ Gestión de Cobros")
