@@ -3,3 +3,7 @@ pandas
 gspread
 gspread-pandas
 fpdf2
+gspread-pandas
+pandas
+gspread
+google-auth
