@@ -2,3 +2,4 @@ gspread-pandas
 pandas
 gspread
 google-auth
+fpdf
